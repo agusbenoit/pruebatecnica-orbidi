@@ -1,30 +1,30 @@
 variable "vpc_cidr" {
-  description = "CIDR block for the VPC"
+  description = "CIDR block para la VPC"
   type        = string
 }
 
 variable "private_subnet_cidrs" {
-  description = "List of CIDR blocks for the private subnets"
+  description = "Lista de CIDR blocks para subnets privadas"
   type        = list(string)
 }
 
 variable "public_subnet_cidrs" {
-  description = "List of CIDR blocks for the public subnets"
+  description = "Lista de CIDR blocks para subnets publicas"
   type        = list(string)
 }
 
 variable "availability_zones" {
-  description = "List of availability zones where the subnets will be created"
+  description = "Lista de availability zones"
   type        = list(string)
 }
 
 variable "vpc_name" {
-  description = "The name of the VPC"
+  description = "Nombre de la VPC"
   type        = string
 }
 
 variable "tags" {
-  description = "Tags to apply to resources"
+  description = "Tags"
   type        = map(string)
   default     = {}
 }
