@@ -19,3 +19,7 @@ Para lograr una infraestructura reutilizable, se va a partir de tres modulos pri
 - **networkin**: encargado de desplegar VPC y subnets
 - **ecs_cluster**: encargado de desplegar el cluster ecs
 - **load_balancer**: encargado de desplegar el balanceador de carga
+
+#### Entornos
+
+Dentro de la carpeta environments se encuentran los archivos de terraform que despliegan la infra para casa entorno. Estos entornos (dev y prod) comparten recursos para todas las apps que se van a desplegar. Estos recursos son la VPC y el cluster ECS. A su vez, cada app cuenta con su ALB y su target group. Para segmentar la configuracion, cada entorno cuenta con una carpeta `_global`, donde se definen los recursos VPC y cluster ECS, y luego una carpeta por cada app a desplegar (`simple-app1` y `simple-app2`) donde se configuran los recursos propios de cada app. 
