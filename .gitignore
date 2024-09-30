@@ -1,0 +1,23 @@
+# Archivos y carpetas de Terraform
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform/
+.terraform.lock.hcl
+
+# Archivos de configuración de credenciales
+*.auto.tfvars
+terraform.tfvars
+
+# Archivos de respaldo y registros
+*.backup
+*.log
+
+# Archivos de estado generados por Terraform que no deben compartirse
+terraform.tfstate.backup
