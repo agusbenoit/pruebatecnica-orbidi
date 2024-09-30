@@ -23,3 +23,5 @@ Para lograr una infraestructura reutilizable, se va a partir de tres modulos pri
 #### Entornos
 
 Dentro de la carpeta environments se encuentran los archivos de terraform que despliegan la infra para casa entorno. Estos entornos (dev y prod) comparten recursos para todas las apps que se van a desplegar. Estos recursos son la VPC y el cluster ECS. A su vez, cada app cuenta con su ALB y su target group. Para segmentar la configuracion, cada entorno cuenta con una carpeta `_global`, donde se definen los recursos VPC y cluster ECS, y luego una carpeta por cada app a desplegar (`simple-app1` y `simple-app2`) donde se configuran los recursos propios de cada app. 
+
+Para resguardar el estado de terraform se configura el backend para que utilice `S3` y una tabla de `DynamoDB`. El script `tfbackendcfg.sh` se encarga de la creacion del bucket y la tabla, solicitando ademas la region donde se va a desplegar toda la infraestructura. Adicionalmente configura el nombre del bucket y esta region en los archivos de los entornos. 
