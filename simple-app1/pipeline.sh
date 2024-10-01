@@ -1,11 +1,11 @@
 #!/bin/bash
 
 AWS_REGION="us-east-1"
-ECR_REPOSITORY="038996484549.dkr.ecr.us-east-1.amazonaws.com/simple-app1"  
+ECR_REPOSITORY="ECRURI"  
 APP_NAME="simple-app1"
 CLUSTER_NAME="ecs-cluster-dev"
 SERVICE_NAME="simple-app1-service"
-TASK_EXECUTION_ROLE="arn:aws:iam::038996484549:role/ecsTaskExecutionRole-simple-app1"
+TASK_EXECUTION_ROLE="TASKROLE"
 
 IMAGE_TAG=$(openssl rand -hex 8)
 

@@ -16,7 +16,7 @@ echo "Autenticando en ECR..."
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
 
 
-FULL_IMAGE_URI="$ECR_REPOSITORY/$APP_NAME:$IMAGE_TAG"
+FULL_IMAGE_URI="$ECR_REPOSITORY:$IMAGE_TAG"
 docker tag $APP_NAME:$IMAGE_TAG $FULL_IMAGE_URI
 
 echo "Haciendo push de la imagen al registro ECR: $FULL_IMAGE_URI"
@@ -60,10 +60,11 @@ aws ecs register-task-definition \
     --requires-compatibilities FARGATE \
     --cpu "256" \
     --memory "512" \
-    --region $AWS_REGION
+    --region $AWS_REGION > /dev/null 2>&1
 
-# Actualizar el servicio para usar la nueva task definition
+LATEST_TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition $APP_NAME --region $AWS_REGION --query 'taskDefinition.taskDefinitionArn' --output text)
+
 echo "Actualizando el servicio ECS con la nueva task definition"
-aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION
+aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $LATEST_TASK_DEFINITION --force-new-deployment --region $AWS_REGION > /dev/null 2>&1
 
 echo "Pipeline completado con éxito."
