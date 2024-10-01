@@ -17,3 +17,8 @@ output "alb_dns_name" {
   value       = module.load_balancer.alb_dns_name
   description = "DNS del Application Load Balancer"
 }
+
+output "task_execution_role" {
+    value       = aws_iam_role.ecs_task_execution_role.arn
+    description = "ARN del task execution role"
+}
