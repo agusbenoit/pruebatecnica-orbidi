@@ -62,7 +62,9 @@ aws ecs register-task-definition \
     --memory "512" \
     --region $AWS_REGION > /dev/null 2>&1
 
+LATEST_TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition $APP_NAME --region $AWS_REGION --query 'taskDefinition.taskDefinitionArn' --output text)
+
 echo "Actualizando el servicio ECS con la nueva task definition"
-aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION /dev/null 2>&1
+aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $LATEST_TASK_DEFINITION --force-new-deployment --region $AWS_REGION > /dev/null 2>&1
 
 echo "Pipeline completado con éxito."
