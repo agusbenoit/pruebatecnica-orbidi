@@ -97,12 +97,12 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
 }
 
 
-resource "aws_ecs_task_definition" "simple-app1-task-definition" {
-  family                   = "simple-app1"
+resource "aws_ecs_task_definition" "simple-app-task-definition" {
+  family                   = "${var.name}"
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   container_definitions    = jsonencode([{
-    name  = "simple-app1"
+    name  = "${var.name}"
     image = "nginx:latest"
     essential = true
     portMappings = [{
@@ -127,10 +127,10 @@ resource "aws_ecs_task_definition" "simple-app1-task-definition" {
   }
 }
 
-resource "aws_ecs_service" "simple_app1_service" {
-  name            = "simple-app1-service"
+resource "aws_ecs_service" "simple_app_service" {
+  name            = "${var.name}-service"
   cluster         = data.terraform_remote_state.global.outputs.ecs_cluster_id
-  task_definition = "simple-app1" 
+  task_definition = "${var.name}" 
   desired_count   = 1
 
   launch_type = "FARGATE"
@@ -143,7 +143,7 @@ resource "aws_ecs_service" "simple_app1_service" {
 
   load_balancer {
     target_group_arn = module.load_balancer.target_group_arn
-    container_name   = "simple-app1"
+    container_name   = "${var.name}"
     container_port   = 8000
   }
 
