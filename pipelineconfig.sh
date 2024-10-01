@@ -2,7 +2,7 @@
 
 # Variables comunes
 AWS_REGION="us-east-1"
-APPS=("simple-app1")
+APPS=("simple-app1" "simple-app2")
 
 for APP_NAME in "${APPS[@]}"; do
     echo "Configurando $APP_NAME..."
@@ -14,7 +14,7 @@ for APP_NAME in "${APPS[@]}"; do
 
     echo "Creando el log group /ecs/$APP_NAME"
     aws logs create-log-group --log-group-name "/ecs/$APP_NAME" --region $AWS_REGION 
-    
+
     TF_PATH="./environments/dev/$APP_NAME"
     ROLE_ARN=$(terraform -chdir=$TF_PATH output -raw task_execution_role)
 
