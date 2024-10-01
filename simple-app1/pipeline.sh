@@ -1,11 +1,11 @@
 #!/bin/bash
 
 AWS_REGION="us-east-1"
-ECR_REPOSITORY="ECRURI"  
+ECR_REPOSITORY="038996484549.dkr.ecr.us-east-1.amazonaws.com/simple-app1"  
 APP_NAME="simple-app1"
 CLUSTER_NAME="ecs-cluster-dev"
 SERVICE_NAME="simple-app1-service"
-TASK_EXECUTION_ROLE="TASKROLE"
+TASK_EXECUTION_ROLE="arn:aws:iam::038996484549:role/ecsTaskExecutionRole-simple-app1"
 
 IMAGE_TAG=$(openssl rand -hex 8)
 
@@ -16,7 +16,7 @@ echo "Autenticando en ECR..."
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
 
 
-FULL_IMAGE_URI="$ECR_REPOSITORY/$APP_NAME:$IMAGE_TAG"
+FULL_IMAGE_URI="$ECR_REPOSITORY:$IMAGE_TAG"
 docker tag $APP_NAME:$IMAGE_TAG $FULL_IMAGE_URI
 
 echo "Haciendo push de la imagen al registro ECR: $FULL_IMAGE_URI"
@@ -60,10 +60,9 @@ aws ecs register-task-definition \
     --requires-compatibilities FARGATE \
     --cpu "256" \
     --memory "512" \
-    --region $AWS_REGION
+    --region $AWS_REGION > /dev/null 2>&1
 
-# Actualizar el servicio para usar la nueva task definition
 echo "Actualizando el servicio ECS con la nueva task definition"
-aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION
+aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION /dev/null 2>&1
 
 echo "Pipeline completado con éxito."
