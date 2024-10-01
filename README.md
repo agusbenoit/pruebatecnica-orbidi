@@ -12,6 +12,7 @@ Cada VPC cuenta con subnets publicas en mas de una zona de disponibilidad, donde
 
 Con este acercamiento logramos alta disponibilidad, ya que las aplicaciones estan distribuidas en multiples zonas de disponibilidad, el uso de ECS permite escalar las aplicaciones segun la demanda, y al correr los contenedores en subnets privadas solo el trafico del ALB es permitido, lo que eleva la seguridad.
 
+El diagrama grafica los recursos de un solo entorno (dev en este caso) para simplificar la ilustracion, pero el entorno productivo seria una copia exacta. 
 
 ## Terraform
 
@@ -67,6 +68,16 @@ El proposito de este script es simular un pipeline como podria ser GitHub Action
 Para que este pipeline pueda funcionar, se deben configurar el URI del repositorio de imagenes de la APP y el ARN del rol de ejecucion de la tarea. De esta configuracion se encarga el script `pipelineconfig.sh` que, al ejecutarlo, por cada app crea un ECR, un log group para CloudWatch y obtiene el ARN del rol mediante terraform.
 
 ## Lanzamiento de la infraestructura y aplicaciones
+
+```bash
+git clone https://github.com/agusbenoit/pruebatecnica-orbidi.git
+# Verificar que los scripts tengan permisos de ejecucion
+chmod +x ./*.sh **/*.sh
+#Iniciar despliegue de infraestructura y aplicaciones
+./init.sh
+```
+
+El repositorio se encuentra listo para desplegar el hipotetico entorno de desarrollo. Dentro de environments se encuentra la carpeta prod a modo ilustrativo. 
 
 Se configuro el script `init.sh` para crear la infraestructura y desplegar las aplicaciones de manera automatica. Al iniciar el script se solicitaran solo dos datos:
 - Nombre de bucket para guardar el estado de terraform
