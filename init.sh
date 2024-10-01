@@ -37,6 +37,8 @@ cd ../simple-app2
 
 echo "Despliegue completado con éxito."
 
+cd ..
+
 TF_PATH="./environments/dev/simple-app1"
 ALB_DNS=$(terraform -chdir=$TF_PATH output -raw alb_dns_name)
 echo "Simple-app1 http://$ALB_DNS"
