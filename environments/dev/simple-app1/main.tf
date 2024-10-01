@@ -69,6 +69,64 @@ resource "aws_security_group" "ecs_service_sg" {
   }
 }
 
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "ecsTaskExecutionRole-${var.name}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "ecsTaskExecutionRole-${var.name}"
+    Environment = "dev"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+
+resource "aws_ecs_task_definition" "simple-app1-task-definition" {
+  family                   = "simple-app1"
+  network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  container_definitions    = jsonencode([{
+    name  = "simple-app1"
+    image = "nginx:latest"
+    essential = true
+    portMappings = [{
+      containerPort = 8000
+      hostPort      = 8000
+    }]
+  }])
+
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = "256"
+  memory                   = "512"
+
+  lifecycle {
+    ignore_changes = [
+      container_definitions,
+      task_role_arn,
+      execution_role_arn,
+      requires_compatibilities,
+      cpu,
+      memory
+    ]
+  }
+}
+
 resource "aws_ecs_service" "simple_app1_service" {
   name            = "simple-app1-service"
   cluster         = data.terraform_remote_state.global.outputs.ecs_cluster_id
