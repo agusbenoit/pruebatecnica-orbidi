@@ -61,7 +61,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 Se parte de una imagen slim de python 3.9 para crear una imagen liviana. Se instala el comand `curl` que luego sirve de healthcheck cuando se crea el servicio en ECS. Se copian y se instalan los requirements. Se copia el archivo princial de la aplicacion y se expone el puerto 8000 (puerto por defecto de fastAPI). Finalmente se corre el comando `uvicorn main:app --host 0.0.0.0 --port 8000 --reload` para permitir conexiones externas a la aplicacion. 
 
-**Pipeline**
+**Pipeline.sh**
 El proposito de este script es simular un pipeline como podria ser GitHub Actions. Comienza con el build de la imagen de la app, partiendoe del `Dockerfile`, luego se autentica en el registro privado de AWS y sube la imagen. Luego de esto utiliza esta nueva imagen para registrar una nueva task-definition de ECS y actualiza el servicio para que utilice esta nueva definicion, ligrando de esta forma el despliegue de la ultima imagen creada. 
 
 Para que este pipeline pueda funcionar, se deben configurar el URI del repositorio de imagenes de la APP y el ARN del rol de ejecucion de la tarea. De esta configuracion se encarga el script `pipelineconfig.sh` que, al ejecutarlo, por cada app crea un ECR, un log group para CloudWatch y obtiene el ARN del rol mediante terraform.
