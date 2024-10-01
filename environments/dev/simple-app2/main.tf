@@ -97,7 +97,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
 }
 
 
-resource "aws_ecs_task_definition" "simple-app1-task-definition" {
+resource "aws_ecs_task_definition" "simple-app2-task-definition" {
   family                   = "${var.name}"
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
@@ -127,7 +127,7 @@ resource "aws_ecs_task_definition" "simple-app1-task-definition" {
   }
 }
 
-resource "aws_ecs_service" "simple_app1_service" {
+resource "aws_ecs_service" "simple_app2_service" {
   name            = "${var.name}-service"
   cluster         = data.terraform_remote_state.global.outputs.ecs_cluster_id
   task_definition = "${var.name}" 
