@@ -7,22 +7,21 @@ TABLADYAMO="terraform-lock-table"
 set -e
 
 echo "Destruyendo recursos en environments/dev/simple-app1..."
-cd ../simple-app1
+cd environments/dev/simple-app1
 terraform init -input=false
 terraform destroy -auto-approve
 
 
 echo "Destruyendo recursos en environments/dev/simple-app2..."
+cd ../simple-app2
 terraform init -input=false
 terraform destroy -auto-approve
 
 
 echo "Destruyendo recursos en environments/dev/_global..."
-cd environments/dev/_global
+cd ../_global
 terraform init -input=false
 terraform destroy -auto-approve
-
-cd ../../../..
 
 echo "Eliminando repositorios ECR"
 
