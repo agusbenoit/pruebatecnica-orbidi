@@ -13,3 +13,7 @@ output "public_subnet_ids" {
 output "ecs_cluster_name" {
   value = module.ecs_cluster.cluster_name
 }
+
+output "ecs_cluster_id" {
+  value = module.ecs_cluster.cluster_id
+}
