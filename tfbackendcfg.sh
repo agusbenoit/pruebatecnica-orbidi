@@ -9,7 +9,7 @@ echo "Región: $REGION"
 aws s3api create-bucket --bucket $TFBUCKET --region $REGION
 
 
-aws s3api put-bucket-versioning --bucket $TFBUCKET --versioning-configuration Status=Enabled
+#aws s3api put-bucket-versioning --bucket $TFBUCKET --versioning-configuration Status=Enabled
 
 aws dynamodb create-table \
     --table-name terraform-lock-table \
