@@ -36,3 +36,10 @@ cd ../simple-app2
 ./pipeline.sh
 
 echo "Despliegue completado con éxito."
+
+TF_PATH="./environments/dev/simple-app1"
+ALB_DNS=$(terraform -chdir=$TF_PATH output -raw alb_dns_name)
+echo "Simple-app1 http://$ALB_DNS"
+TF_PATH="./environments/dev/simple-app2"
+ALB_DNS=$(terraform -chdir=$TF_PATH output -raw alb_dns_name)
+echo "Simple-app2 http://$ALB_DNS"
